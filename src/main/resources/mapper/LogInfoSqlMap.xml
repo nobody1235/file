@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.LogInfoSqlMap">
+<!--resultType先是传入的，parameterType是传-->
+	<insert id="addLog" parameterType="LogInfo">
+		insert into logInfo(
+			 operator,description,logtype,requestip,exceptioncode
+			,exceptiondetail,createby,createdate
+		)values(
+			 #{operator},#{description},#{logtype},#{requestip}
+			,#{exceptioncode},#{exceptiondetail},#{createby},#{createdate}
+		)
+	</insert>
+<!--	数据库的字段是column,javabean的字段-->
+	<resultMap type="LogInfo" id="logMap">
+		<id column="operator" property="operator"></id>
+		<result column="description" property="description"></result>
+		<result column="logtype" property="logtype"></result>
+		<result column="requestip" property="requestip"></result>
+		<result column="exceptioncode" property="exceptioncode"></result>
+		<result column="exceptiondetail" property="exceptiondetail"></result>
+		<result column="createby" property="createby"></result>
+		<result column="createdate" property="createdate"></result>
+	</resultMap>
+</mapper>

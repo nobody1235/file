@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.RoleMenuSqlMap">
+    <!--resultType先是传入的，parameterType是传出-->
+
+<!--    查询所有的菜单的信息-->
+    <select id="findAllID" resultMap="findMenuAll">
+	    SELECT  menuid,menuname,menuurl,menuparentid
+	    FROM  MENUS
+	    WHERE MENUPARENTID = 0;
+    </select>
+    <select id="findAllIDs"  resultMap="findMenuAll">
+	    SELECT  menuid,menuname,menuurl,menuparentid
+	    FROM  MENUS
+	    WHERE MENUPARENTID = #{menuid};
+    </select>
+    <resultMap type="TreeData" id="findMenuAll">
+        <result column="menuid" property="id"></result>
+        <result column="menuname" property="title"></result>
+        <!--嵌套查询-集合 property是集合的定义，Admin是对应的泛型-->
+        <collection property="children" ofType="TreeData"
+                    column="menuid" javaType="java.util.ArrayList" select="findAllIDs">
+        </collection>
+    </resultMap>
+
+<!--    查询==对应角色的菜单权限-->
+    <select id="findRMID" resultMap="findRm" parameterType="java.lang.Integer">
+	    SELECT  M.menuid as menuid,M.menuname as menuname,R.roleid as roleid
+	    FROM  romerelation R,MENUS M
+	    WHERE R.MENUID=M.MENUID AND M.MENUPARENTID = 0 and R.roleid=#{roleid};
+    </select>
+    <select id="findRmsID"  resultType="TreeData">
+	    SELECT  M.menuid as id,M.menuname as title
+	    FROM  romerelation R,MENUS M
+	    WHERE R.MENUID=M.MENUID
+	    and m.menuid in(select menuid from romerelation where roleid = #{roleid})
+	    AND M.MENUPARENTID = #{menuid} and R.roleid=#{roleid};
+    </select>
+    <resultMap type="TreeData" id="findRm">
+        <result column="menuid" property="id"></result>
+        <result column="menuname" property="title"></result>
+        <!--嵌套查询-集合 property是集合的定义，Admin是对应的泛型-->
+<!--        传递查询参数名称=字段名称-->
+        <collection property="children" ofType="TreeData"
+                    column="{menuid=menuid,roleid=roleid}" javaType="java.util.ArrayList" select="findRmsID">
+        </collection>
+    </resultMap>
+
+<!--*********************************对应的修改菜单的内容-->
+<!--    delete from romerelation where menuid !=4 AND roleid = #{roleid};-->
+    <delete id="delMenu" parameterType="java.lang.Integer">
+	    delete from romerelation where roleid = #{roleid};
+    </delete>
+
+    <insert id="insertMenu" parameterType="java.util.Map">
+        insert into romerelation(roleid,menuid)values(#{roleid},#{menuid})
+    </insert>
+</mapper>

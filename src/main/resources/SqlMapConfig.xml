@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--加载外部配置 -->
+    <!--配置别名：<typeAlias type="pojo.Book" alias="book"/> 给某个对象去别名 -->
+    <typeAliases>
+        <package name="com.example.entity" /><!--这是给entity包下所有类取别名，在用完全限定命名的情况下可以通过类名直接调用 -->
+    </typeAliases>
+
+<!--    <mappers>-->
+<!--        <mapper resource="mapper/UserMapper.xml"/>-->
+<!--        <mapper resource="mapper/MenuSqlMap.xml"/>-->
+<!--        <mapper resource="mapper/AdminSqlMap.xml"/>-->
+<!--        <mapper resource="mapper/AdminSqlMap2.xml"/>-->
+<!--        <mapper resource="mapper/RoleSqlMap.xml"/>-->
+<!--        <mapper resource="mapper/RoleMenuSqlMap.xml"/>-->
+<!--        <mapper resource="mapper/LogInfoSqlMap.xml"/>-->
+<!--        <mapper resource="mapper/DocumentSqlMap.xml"/>-->
+<!--    </mappers>-->
+</configuration>

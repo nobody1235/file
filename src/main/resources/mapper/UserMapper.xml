@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.UserMapper">
+    <!--resultType先是传入的，parameterType是传-一样的话，其实是可以不用写的-->
+    <resultMap type="com.example.entity.Userinfo" id="findU">
+        <result column="userid" property="userid"></result>
+        <result column="username" property="username"></result>
+        <result column="password" property="password"></result>
+        <result column="usersex" property="usersex"></result>
+        <result column="schoolmate" property="schoolmate"></result>
+        <result column="position" property="position"></result>
+    </resultMap>
+    <select id="findUser" resultMap="findU" parameterType="Userinfo">
+		select userid,username,password,roleid from userinfo
+		where username = #{username}
+		and password = #{password}
+		and roleid = 2
+	</select>
+
+    <select id="findAll" resultMap="findU" parameterType="java.util.HashMap">
+        select userid, username,addtime,addscore,uploadsum,downloadsum,userstate
+        from userinfo
+        <where> roleid = 2
+            <if test="username != null and username != ''">
+                and username like "%"#{username}"%"
+            </if>
+            <if test="beginTime != null and beginTime != ''">
+                and addtime &gt; #{beginTime}
+            </if>
+            <if test="overTime != null and overTime != ''">
+                and addtime &lt; #{overTime}
+            </if>
+        </where>
+        limit #{pageInt},#{limitInt}
+    </select>
+
+<!--    <select id="findAll2" resultType="Userinfo">-->
+<!--        select userid, username, password from userinfo-->
+<!--        <where>-->
+<!--            <if test="userid != null and userid != ''">-->
+<!--                and userid = #{userid}-->
+<!--            </if>-->
+<!--            <choose>-->
+<!--                <when test="password == null">and password = 123456</when>-->
+<!--                <otherwise>and password = #{password}</otherwise>-->
+<!--            </choose>-->
+<!--        </where>-->
+<!--    </select>-->
+    <!--	注册-->
+    <insert id="addUser" parameterType="java.util.HashMap">
+		insert into userinfo(
+			 username
+			,password
+			,usersex
+			,schoolmate
+			,position
+			,cellphone
+			,usermail
+            ,addtime
+            ,userstate
+            ,roleid
+		)values(
+			 #{username}
+			,#{password}
+			,#{usersex}
+			,#{schoolmate}
+			,#{position}
+			,#{cellphone}
+			,#{usermail}
+			,NOW()
+			,#{userstate}
+			,#{roleid}
+		)
+	</insert>
+    <!--多人注册-->
+    <!--	<insert id="addUsers" parameterType="java.util.List">-->
+    <!--		insert into userinfo(-->
+    <!--			 username-->
+    <!--			,password-->
+    <!--			,usersex-->
+    <!--			,realname-->
+    <!--		)values-->
+    <!--		<foreach collection="list" item="item" index="index" separator=",">-->
+    <!--			( #{item.username}-->
+    <!--			,#{item.password}-->
+    <!--			,#{item.usersex}-->
+    <!--			,#{item.realname})-->
+    <!--		</foreach>-->
+    <!--	</insert>-->
+
+    <delete id="deleteById" parameterType="int">
+        delete from userinfo
+        where userid = #{userid}
+    </delete>
+
+    <update id="updateById" parameterType="Userinfo">
+        update userinfo
+        set  username = #{username}
+            ,addscore = #{addscore}
+            ,userstate = #{userstate}
+        where userid = #{userid}
+    </update>
+
+    <select id="selectFrontName" resultMap="findU" parameterType="string">
+		select * from userinfo where username = #{username}
+	</select>
+
+    <update id="updateState" parameterType="java.util.HashMap">
+        update userinfo set userstate = #{userstate} where userid = #{userid}
+    </update>
+
+
+<!--    后台的查询用户登录-->
+    <select id="selectAdmin" resultMap="findU" parameterType="Userinfo">
+        select * from userinfo
+        where username = #{username}
+        and password = #{password}
+        and roleid = 1;
+    </select>
+</mapper>

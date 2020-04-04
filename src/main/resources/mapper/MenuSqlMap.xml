@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.MenuSqlMap">
+    <!--resultType先是传入的，parameterType是传出-->
+    	<resultMap type="com.example.entity.MenusInfo" id="findMenu">
+    		<result column="menuid" property="menuid"></result>
+    		<result column="menuname" property="menuname"></result>
+    		<result column="menuurl" property="menuurl"></result>
+    		<result column="menuparentid" property="menuparentid"></result>
+    	</resultMap>
+
+<!--    <select id="findRoleId" resultMap="findMenu" parameterType="java.lang.Integer">-->
+<!--		select roleid,rolename from Role where roleid = #{roleid}-->
+<!--	</select>-->
+    <select id="findMenuID" resultMap="findMenu" parameterType="java.lang.Integer">
+	    SELECT  M.menuid,M.menuname,M.menuurl,M.menuparentid
+	    FROM  romerelation R,MENUS M
+	    WHERE R.MENUID=M.MENUID AND R.roleid = #{roleid} AND M.MENUPARENTID = 0;
+    </select>
+    <select id="findMenusID" resultMap="findMenu" parameterType="java.util.HashMap">
+	    SELECT  M.menuid,M.menuname,M.menuurl,M.menuparentid
+	    FROM  romerelation R,MENUS M
+	    WHERE R.MENUID=M.MENUID AND R.roleid = #{roleid} AND M.MENUPARENTID = #{menuparentid};
+    </select>
+<!--    <resultMap type="Role" id="findMenu">-->
+<!--        <id column="roleid" property="roleid"></id>-->
+<!--        &lt;!&ndash;嵌套查询-集合 property是集合的定义，Admin是对应的泛型&ndash;&gt;-->
+<!--        <collection property="admins" ofType="MenusInfo"-->
+<!--                    javaType="java.util.ArrayList"-->
+<!--                    column="roleid" select="findMenuID">-->
+<!--        </collection>-->
+<!--    </resultMap>-->
+
+<!--&lt;!&ndash;对应的查询的是权限管理的菜单的内容进行显示&ndash;&gt;-->
+<!--	<select id="findMenuAll" resultMap="findMenu" parameterType="java.lang.Integer">-->
+<!--		SELECT menuid,menuname,menuurl,menuparentid FROM MENUS where-->
+<!--	</select>-->
+
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.DocumentSqlMap">
+	<!--resultType先是传入的，parameterType是传-->
+	<resultMap type="com.example.entity.Document" id="findDocu">
+		<result column="documentid" property="documentid"></result>
+		<result column="documentname" property="documentname"></result>
+		<result column="uploadpeople" property="uploadpeople"></result>
+		<result column="uploadtime" property="uploadtime"></result>
+		<result column="downloadscore" property="downloadscore"></result>
+		<result column="documenttype" property="documenttype"></result>
+		<result column="documentcontent" property="documentcontent"></result>
+	</resultMap>
+<!--	<select id="findDocument" resultMap="findDocu" parameterType="Document">-->
+<!--		select documentid,uploadpeople,uploadtime,downloadscore,documenttype from document-->
+<!--	</select>-->
+
+	<select id="findDocument" resultMap="findDocu" parameterType="java.util.HashMap">
+		select documentid,documentname,uploadpeople,uploadtime,downloadscore,documenttype,documentcontent from document
+		<where>
+			documentstate='待审核'
+			<if test="documentname != null and documentname != ''">
+				and	documentname like "%"#{documentname}"%"
+			</if>
+			<if test="uploadpeople != null and uploadpeople != ''">
+				and	uploadpeople like "%"#{uploadpeople}"%"
+			</if>
+			<if test="beginTime != null and beginTime != ''">
+				and	uploadtime &gt; #{beginTime}
+			</if>
+			<if test="overTime != null and overTime != ''">
+				and	uploadtime &lt; #{overTime}
+			</if>
+			<if test="documenttype != null and documenttype !=''">
+				and documenttype =#{documenttype}
+			</if>
+		</where>
+		limit #{pageInt},#{limitInt}
+	</select>
+
+<!--	<select id="findAll2" resultType="Userinfo">-->
+<!--		select userid, username, password from userinfo-->
+<!--		<where>-->
+<!--			<if test="userid != null and userid != ''">-->
+<!--				and userid = #{userid}-->
+<!--			</if>-->
+<!--			<choose>-->
+<!--				<when test="password == null">and password = 123456</when>-->
+<!--				<otherwise>and password = #{password}</otherwise>-->
+<!--			</choose>-->
+<!--		</where>-->
+<!--	</select>-->
+	<!--	注册-->
+	<insert id="addDocument" parameterType="java.util.HashMap">
+		insert into document(
+			 documentname
+			,uploadpeople
+			,uploadtime
+			,downloadscore
+			,documenttype
+			,documentcontent
+		)values(
+			 #{documentname}
+			,#{uploadpeople}
+			,#{uploadtime}
+			,#{downloadscore}
+			,#{documenttype}
+			,#{documentcontent}
+		)
+	</insert>
+<!--	&lt;!&ndash;多人注册&ndash;&gt;-->
+<!--	<insert id="addUsers" parameterType="java.util.List">-->
+<!--		insert into userinfo(-->
+<!--		username-->
+<!--		,password-->
+<!--		,usersex-->
+<!--		,realname-->
+<!--		)values-->
+<!--		<foreach collection="list" item="item" index="index" separator=",">-->
+<!--			( #{item.username}-->
+<!--			,#{item.password}-->
+<!--			,#{item.usersex}-->
+<!--			,#{item.realname})-->
+<!--		</foreach>-->
+<!--	</insert>-->
+
+<!--	<delete id="deleteById" parameterType="int">-->
+<!--        delete from userinfo-->
+<!--        where userid = #{userid}-->
+<!--    </delete>-->
+
+<!--	<update id="updateById" parameterType="Userinfo">-->
+<!--        update userinfo-->
+<!--        set  username = #{username}-->
+<!--            ,password = #{password}-->
+<!--            ,usersex = #{usersex}-->
+<!--            ,realname = #{realname}-->
+<!--        where userid = #{userid}-->
+<!--    </update>-->
+
+	<update id="updateapproved" parameterType="string">
+		update document set documentstate='审核通过' where uploadtime = #{uploadtime};
+	</update>
+	
+	<update id="updatenoapproved" parameterType="string">
+		update document set documentstate='审核不通过' where uploadtime = #{uploadtime};
+	</update>
+</mapper>

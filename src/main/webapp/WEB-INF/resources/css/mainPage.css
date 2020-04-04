@@ -1,0 +1,95 @@
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+html,body
+{
+    width: 100%;
+    height: 100%;
+}
+
+
+/*#div-header*/
+/*{*/
+/*    width: 100%;*/
+/*    height: 15%;*/
+/*    background-color: lightseagreen;*/
+/*}*/
+
+/*#div-left*/
+/*{*/
+/*    width: 15%;*/
+/*    height: 85%;*/
+/*    background-color: gray;*/
+/*    float: left;*/
+/*}*/
+
+/*#div-header h1*/
+/*{*/
+/*    float: left;*/
+/*    color: white;*/
+/*    margin-left: 5%;*/
+/*    margin-top: 1%;*/
+/*}*/
+
+/*#div-header h4*/
+/*{*/
+/*    float: right;*/
+/*    color: white;*/
+/*    margin-top: 5%;*/
+/*    margin-right: 3%;*/
+/*}*/
+
+/*#div-header a*/
+/*{*/
+/*    float: right;*/
+/*    margin-top: 5%;*/
+/*    margin-right: 1%;*/
+/*}*/
+
+/*#div-header a:link*/
+/*{*/
+/*    text-decoration: none;*/
+/*    color: white;*/
+/*}*/
+
+/*#div-header a:hover*/
+/*{*/
+/*    text-decoration: underline;*/
+/*    color: orange;*/
+/*}*/
+
+
+/*#div-left h3*/
+/*{*/
+/*    color: white;*/
+/*    margin: 5% 20%;*/
+/*}*/
+
+/*#div-left ul*/
+/*{*/
+/*    color: white;*/
+/*    margin: 5% 15%;*/
+/*}*/
+
+
+/*#div-left a:link*/
+/*{*/
+/*    text-decoration: none;*/
+/*    color: white;*/
+/*}*/
+
+/*#div-left a:hover*/
+/*{*/
+/*    text-decoration: underline;*/
+/*    color: orange;*/
+/*}*/
+
+#div-right iframe
+{
+    width: 100%;
+    height: 100%;
+    /*padding-top:20px;*/
+}
